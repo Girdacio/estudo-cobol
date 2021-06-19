@@ -12,12 +12,16 @@
         01 indx-zro PIC 9(2).
         01 indxA    PIC 9(2).
         01 indxB    PIC 9(2).
-        01 casas    PIC 9(1).
+        01 casas    PIC 9(1).
         PROCEDURE DIVISION.
         processar.
             ACCEPT n.
             IF n = 0 THEN
                 STOP RUN
+            END-IF.
+            
+            IF teste > 1 THEN
+                DISPLAY X'0D'
             END-IF.
             
             ACCEPT nome1.
@@ -28,7 +32,6 @@
             ADD 1 TO teste.
             
             PERFORM calcular VARYING i FROM 0 BY 1 UNTIL i = n.
-            DISPLAY X'04'.
             PERFORM processar.
             
         calcular.
@@ -45,8 +48,9 @@
             END-IF.
             
         calc-zros.
-            PERFORM VARYING indx-zro FROM 1 BY 1 
-                UNTIL teste(indx-zro:1) <> 0 END-PERFORM.
+            SET indx-zro TO 0.
+            INSPECT teste TALLYING indx-zro FOR LEADING ZEROES.
+            ADD 1 TO indx-zro.
             COMPUTE casas = 5 - indx-zro.
             
         calc-nm1.
